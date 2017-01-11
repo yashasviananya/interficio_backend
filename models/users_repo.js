@@ -10,6 +10,26 @@ module.exports = {
        return data;
      })
       .catch(error => error);
-   } 
-}
+   },
+   fetchSetId: function (data) {
+     let query =  `SELECT story_id from user where id = :data`;
+     return db.query(query, {replacements: {data: data}, type: db.QueryTypes.SELECT})
+     .then(data => {
+       return data;
+     })
+      .catch(error => error);   
+  },
+  updateSetId: function (data) {
+     let query =  `UPDATE user set story_id = story_id+1 where id = :data`;
+     return db.query(query, {replacements: {data: data}, type: db.QueryTypes.UPDATE})
+     .then(data => {
+      //  console.log('update data',data);
+       return {message: 'update-success'};
+     })
+      .catch(error => {
+      console.log('error',error);
+      return error;
+    });     
+  }
+};
 

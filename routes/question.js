@@ -34,18 +34,18 @@ module.exports = app => {
         res.send(data);
       })
       .catch( error => {
-          res.status(500);
+        res.status(500);
       })
   })
 
   router.post('/storySubmit', (req,res) => {
     questionController.storySubmit(req.body)
       .then( data=> {
-        console.log(data);
+        console.log('router',data);
         res.send(data);
       })
       .catch( error => {
-          res.status(500);
+        res.status(500);
       }) 
   })
 

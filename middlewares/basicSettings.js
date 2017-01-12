@@ -1,6 +1,5 @@
 "use strict";
 
-let cookieParser = require("cookie-parser");
 let bodyParser = require("body-parser");
 let favicon = require("serve-favicon");
 let path = require("path");
@@ -26,5 +25,4 @@ module.exports = app => {
     });
      app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
-     app.use(cookieParser());
 };

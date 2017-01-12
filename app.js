@@ -16,10 +16,10 @@ consign()
     .then("./middlewares/staticResources.js")
     .then("./models")
     .then("./controllers")
+    .then("./middlewares/auth.js")
     .then("./routes")
     .then("./middlewares/mainRoutes.js")
     .then("./middlewares/errorHandler.js")
-    .then("./middlewares/auth.js")
     .into(app);
 
 if (process.env.NODE_ENV !== "test") {

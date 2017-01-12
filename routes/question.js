@@ -46,7 +46,7 @@ module.exports = app => {
       })
       .catch( error => {
           res.status(500);
-      }) 
+      })
   })
 
   return router;

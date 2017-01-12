@@ -38,6 +38,17 @@ module.exports = app => {
       })
   })
 
+  router.get('/fetchScore', (req,res) => {
+    questionController.fetchScore()
+      .then( data=> {
+        console.log(data);
+        res.send(data);
+      })
+      .catch( error => {
+        res.status(500);
+      })
+  })
+
   router.post('/storySubmit', (req,res) => {
     questionController.storySubmit(req.body)
       .then( data=> {

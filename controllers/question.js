@@ -45,6 +45,15 @@ module.exports = app => {
     .catch( error=> error);
   }
 
+  let fetchScore = function () {
+    return user.fetchScore()
+    .then( data=> {
+      console.log('score',data);
+      return data;
+    })
+    .catch( error=> error);
+  }
+
   let storySubmit = function (storyObj) {
     console.log('stroy obj', storyObj);
     let answer = storyObj.answer, story_id = storyObj.id, obj, user_id = 1;
@@ -69,6 +78,7 @@ module.exports = app => {
     fetchSet,
     fetchQuestion,
     answerSubmit,
-    storySubmit
+    storySubmit,
+    fetchScore
   };
 }

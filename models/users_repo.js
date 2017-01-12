@@ -30,6 +30,18 @@ module.exports = {
       console.log('error',error);
       return error;
     });     
+  },
+  fetchScore: function () {
+     let query =  `SELECT name,score from user order by score ASC`;
+     return db.query(query, { type: db.QueryTypes.SELECT})
+     .then(data => {
+      //  console.log('update data',data);
+       return data;
+     })
+      .catch(error => {
+      console.log('error',error);
+      return error;
+    });       
   }
 };
 

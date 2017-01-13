@@ -6,8 +6,8 @@ module.exports = app => {
   let user = app.models.users_repo,
     question = app.models.questions_repo, story_id;
 
-  let fetchSet = function () {
-    let user_id = 1;
+  let fetchSet = function (user_id) {
+    console.log('controllers',user_id);
     return user.fetchSetId(user_id)
       .then( data=> {
         console.log('set_id from user_id',data);
@@ -56,7 +56,7 @@ module.exports = app => {
 
   let storySubmit = function (storyObj) {
     console.log('stroy obj', storyObj);
-    let answer = storyObj.answer, story_id = storyObj.id, obj, user_id = 1;
+    let answer = storyObj.answer, story_id = storyObj.id, obj, user_id = storyObj.user_id;
     return question.storySubmit(story_id)
     .then( data=> {
       if(data.answer == answer) {

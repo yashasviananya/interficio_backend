@@ -6,8 +6,8 @@ module.exports = {
   addUser: function (id,email,name) {
     console.log(id,email,name);
     // console.log('add data--',data);
-    let query =  `INSERT INTO user (id, email, name) VALUES (2,'asdf','piu')`;
-      return db.query(query, {replacements: {id: id, email: email, name: name }})
+    let query =  `INSERT INTO user (id, email, name) VALUES (:status)`;
+      return db.query(query, {replacements: {status: [id,email,name]}, type: db.QueryTypes.INSERT})
      .then(data => {
        console.log('insert',data);
        return {message: 'success'};

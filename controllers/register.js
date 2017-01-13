@@ -12,11 +12,12 @@ module.exports = app => {
     let user_id = query_data.id;
     return user.checkUser(user_id)
      .then( data => {
+         console.log('exissssss',data);
          if(!data.exist) {
            return user.addUser(query_data.id,query_data.email,query_data.name)
           } else {
             console.log('data exist in database',data);
-            Promise.resolve(data);
+            return Promise.resolve(data);
           }
       })
       .then( data => {

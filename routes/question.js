@@ -7,7 +7,9 @@ module.exports = app => {
   let questionController = app.controllers.question;
 
   router.get('/fetchSet', (req, res) => {
-    let obj =  questionController.fetchSet()
+    let user_id = req.query.user_id;
+    console.log('routess',user_id);
+    questionController.fetchSet(user_id)
       .then( data => {
         res.send(data);
       })

@@ -3,82 +3,82 @@
 var newPromise = require('es6-promise').Promise;
 
 module.exports = app => {
+  let user = app.models.users_repo,
+    question = app.models.questions_repo, story_id;
 
-  let fetchSet = function () {      
-    let obj = { id:1 , description: 'Walter White, the famous chemistry teacher is found murdered! A note\
-     hanging out of the pocket coat of Mr. White read:\
-     9-53-8-11/3-3/11-52/4-90/22-11/20-90-39 Sherlock, the greatest detective in town is called upon\
-     to look into this case. In no time, he decrypts the code and the students involved in the murder are found!\
-     Can YOU be the Sherlock?'};
-    return new Promise (function(resolve, reject) {
-      if(obj) {
-        return resolve(obj);
-      } else {
-        return reject('error');
-      }
-    });
+  let fetchSet = function (user_id) {
+    console.log('controllers',user_id);
+    return user.fetchSetId(user_id)
+      .then( data=> {
+        console.log('set_id from user_id',data);
+        story_id = data[0].story_id+1;
+        console.log('set iddd',story_id);
+        return question.fetchSet(story_id)
+      })
+      .then( data=> {
+        return data[0];
+      })
+      .catch( error=> error);
   };
 
   let fetchQuestion = function () {
-    let obj = [{ set_id: 1,id: 1,description: 'A bevy of Bridesmaids are standing, evenly spaced, in a circle.\
-     Mariah the 7th bridesmaid isA bevy of Bridesmaids are standing, evenly spaced, in a circle. Mariah the\
-     7th bridesmaid is directly opposite to the 18th bridesmaid Lucy. How many bridesmaids are there? directly\
-    opposite to the 18th bridesmaid Lucy. How many bridesmaids are there?'}, { set_id: 1,id: 2,description: 'A bevy of Bridesmaids are standing, evenly spaced, in a circle.\
-     Mariah the 7th bridesmaid isA bevy of Bridesmaids are standing, evenly spaced, in a circle. Mariah the\
-     7th bridesmaid is directly opposite to the 18th bridesmaid Lucy. How many bridesmaids are there? directly\
-    opposite to the 18th bridesmaid Lucy. How many bridesmaids are there?'}, { set_id: 1,id: 3,description: 'A bevy of Bridesmaids are standing, evenly spaced, in a circle.\
-     Mariah the 7th bridesmaid isA bevy of Bridesmaids are standing, evenly spaced, in a circle. Mariah the\
-     7th bridesmaid is directly opposite to the 18th bridesmaid Lucy. How many bridesmaids are there? directly\
-    opposite to the 18th bridesmaid Lucy. How many bridesmaids are there?'},{ set_id: 1,id: 4,description: 'A bevy of Bridesmaids are standing, evenly spaced, in a circle.\
-     Mariah the 7th bridesmaid isA bevy of Bridesmaids are standing, evenly spaced, in a circle. Mariah the\
-     7th bridesmaid is directly opposite to the 18th bridesmaid Lucy. How many bridesmaids are there? directly\
-    opposite to the 18th bridesmaid Lucy. How many bridesmaids are there?'}];
-    return new Promise (function(resolve, reject) {
-       if(obj) {
-       return resolve(obj);
-      } else {
-       return reject('error');
-      }
-    });
+     return question.fetchQuestion(story_id)
+      .then( data=> {
+        // console.log(data);
+        return data;
+      })
+      .catch( error=> error);
   }
 
   let answerSubmit = function (answerObj) {
-    let answer = answerObj.answer, obj;
-     return new Promise (function(resolve, reject) {
-       if(answer == '22') {
-           obj = { verified: true, url: 'http://www.w3schools.com/'};
-       } else {
-         obj = { verified: false, message: 'wrong answer'}; 
-       } 
-       if(obj) {
-         return resolve(obj);
-       }  else {
-         return reject('error');
-       }
-    });
+    console.log('answer', answerObj);
+    let answer = answerObj.answer,answer_id = answerObj.id, obj;
+    return question.answerSubmit(answer_id)
+    .then( data=> {
+      console.log('right ans',data,'submitted ans',answer);
+      if(data.answer == answer) {
+        return {verified: true, url: data.url}; 
+      } else {
+        return {verified: false};
+      }
+    })
+    .catch( error=> error);
+  }
+
+  let fetchScore = function () {
+    return user.fetchScore()
+    .then( data=> {
+      console.log('score',data);
+      return data;
+    })
+    .catch( error=> error);
   }
 
   let storySubmit = function (storyObj) {
-    let answer = storyObj.answer, obj;
-     return new Promise (function(resolve, reject) {
-       if(answer == 'FIONa/LiLi/NaTe/BeTh/TiNa/CaThY.') {
-           // update user table with incremented set id;
-           obj = { verified: true};
-       } else {
-         obj = { verified: false, message: 'wrong answer'}; 
-       } 
-       if(obj) {
-         return resolve(obj);
-       }  else {
-         return reject('error');
-       }
-    });
+    console.log('stroy obj', storyObj);
+    let answer = storyObj.answer, story_id = storyObj.id, obj, user_id = storyObj.user_id;
+    return question.storySubmit(story_id)
+    .then( data=> {
+      if(data.answer == answer) {
+        obj = {verified: true};
+        return user.updateSetId(user_id);
+      } else {
+        obj = {verified: false};
+        return Promise.resolve(data);
+      }
+    })
+      .then( data => {
+        console.log('data',data);
+        return obj;
+      })
+     .catch( error=> error);
   }
  
  return {
     fetchSet,
     fetchQuestion,
     answerSubmit,
-    storySubmit
+    storySubmit,
+    fetchScore
   };
 }

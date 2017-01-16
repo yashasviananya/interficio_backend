@@ -1,6 +1,7 @@
 "use strict"
 
 let router = require('express').Router();
+let moment = require('moment');
 
 module.exports = app => {
 
@@ -41,7 +42,8 @@ module.exports = app => {
   })
 
   router.get('/fetchScore', (req,res) => {
-    questionController.fetchScore()
+    console.log('fetch score');
+    questionController.fetchScore(req.query.data)
       .then( data=> {
         console.log(data);
         res.send(data);
@@ -52,6 +54,8 @@ module.exports = app => {
   })
 
   router.post('/storySubmit', (req,res) => {
+    let data = req.body;
+    data.date = moment(data.date).format('YYYY-MM-DD hh:mm:ss');
     questionController.storySubmit(req.body)
       .then( data=> {
         console.log('router',data);

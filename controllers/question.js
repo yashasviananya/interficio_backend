@@ -11,7 +11,7 @@ module.exports = app => {
     return user.fetchSetId(user_id)
       .then( data=> {
         console.log('set_id from user_id',data);
-        story_id = data[0].story_id+1;
+        story_id = data[0].story_id;
         console.log('set iddd',story_id);
         return question.fetchSet(story_id)
       })
@@ -45,10 +45,18 @@ module.exports = app => {
     .catch( error=> error);
   }
 
-  let fetchScore = function () {
-    return user.fetchScore()
-    .then( data=> {
-      console.log('score',data);
+  let fetchScore = function (data) {
+    console.log("controllers---data--",data);
+    return user.fetchScore(data)
+    .then( data => {
+      data.sort(function(a, b ) {
+        if(a.score == b.score)  {
+         let c = new Date(a.date);
+         let d = new Date(b.date);
+         return c-d;
+        }
+      });
+      console.log('score after sort-----',data);
       return data;
     })
     .catch( error=> error);
@@ -56,12 +64,13 @@ module.exports = app => {
 
   let storySubmit = function (storyObj) {
     console.log('stroy obj', storyObj);
-    let answer = storyObj.answer, story_id = storyObj.id, obj, user_id = storyObj.user_id;
+    let answer = storyObj.answer, story_id = storyObj.id, obj, user_id = storyObj.user_id, date = storyObj.date;
+    console.log('dateee', date);
     return question.storySubmit(story_id)
     .then( data=> {
       if(data.answer == answer) {
         obj = {verified: true};
-        return user.updateSetId(user_id);
+        return user.updateDetail(user_id,date);
       } else {
         obj = {verified: false};
         return Promise.resolve(data);

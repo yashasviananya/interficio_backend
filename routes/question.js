@@ -55,8 +55,10 @@ module.exports = app => {
 
   router.post('/storySubmit', (req,res) => {
     let data = req.body;
+    data.date = Number(data.date);
+    console.log('timestamp',typeof(data.date),data.date);
     data.date = moment(data.date).format('YYYY-MM-DD hh:mm:ss');
-    questionController.storySubmit(req.body)
+    questionController.storySubmit(data)
       .then( data=> {
         console.log('router',data);
         res.send(data);

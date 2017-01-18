@@ -10,7 +10,7 @@ module.exports = app => {
   let auth = app.middlewares.auth;
 
   router.post('/login', (req,res) => {
-    console.log('asdf',req.body);
+    console.log('loginnn',req.body);
     let data = req.body;
     registerController.userLogin(data)
       .then(data => {

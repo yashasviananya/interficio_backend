@@ -45,9 +45,8 @@ module.exports = app => {
     .catch( error=> error);
   }
 
-  let fetchScore = function (data) {
-    console.log("controllers---data--",data);
-    return user.fetchScore(data)
+  let fetchScore = function () {
+    return user.fetchScore()
     .then( data => {
       data.sort(function(a, b ) {
         if(a.score == b.score)  {

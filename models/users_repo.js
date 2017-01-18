@@ -35,10 +35,9 @@ module.exports = {
       return error;
     });     
   },
-  fetchScore: function (data) {
-     let rand = parseInt(data);
-     let query =  `SELECT name,story_id,date,score from user order by score DESC limit 10 offset :rand`;
-     return db.query(query, {replacements: {rand: rand}, type: db.QueryTypes.SELECT})
+  fetchScore: function () {
+     let query =  `SELECT name,story_id,date,score from user order by score DESC`;
+     return db.query(query, { type: db.QueryTypes.SELECT})
      .then(data => {
       //  console.log('update data',data);
        return data;

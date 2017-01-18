@@ -43,7 +43,7 @@ module.exports = app => {
 
   router.get('/fetchScore', (req,res) => {
     console.log('fetch score');
-    questionController.fetchScore(req.query.data)
+    questionController.fetchScore()
       .then( data=> {
         console.log(data);
         res.send(data);

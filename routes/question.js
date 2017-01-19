@@ -20,8 +20,8 @@ module.exports = app => {
   });
 
   router.get('/fetchQuestion', (req, res) => {
-    let answerObj = req.body;
-    questionController.fetchQuestion(answerObj)
+    let set_id = req.query.set_id;
+    questionController.fetchQuestion(set_id)
       .then( data => {
         res.send(data);
       })

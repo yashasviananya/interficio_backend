@@ -21,8 +21,8 @@ module.exports = app => {
       .catch( error=> error);
   };
 
-  let fetchQuestion = function () {
-     return question.fetchQuestion(story_id)
+  let fetchQuestion = function (set_id) {
+     return question.fetchQuestion(set_id)
       .then( data=> {
         // console.log(data);
         return data;
